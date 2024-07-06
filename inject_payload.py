@@ -1,3 +1,9 @@
+import codecs
+
+def to_hex(s):
+    return codecs.encode(s.encode(), 'hex').decode()
+
+# ثم قم بتحديث باقي الكود وفقًا لذلك
 from steganography.steganography import Steganography
 
 # مسار الصورة الأصلية
