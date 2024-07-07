@@ -1,4 +1,5 @@
 Flask
 folium
-steganography
+stegano
 requests
+gunicorn
