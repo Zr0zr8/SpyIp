@@ -6,7 +6,9 @@ WORKDIR /app
 COPY . .
 
 # تثبيت المكتبات المطلوبة
-RUN pip install --no-cache-dir -r requirements.txt
+RUN apt-get update && \
+    apt-get install -y binutils && \
+    pip install --no-cache-dir -r requirements.txt
 
 # تحويل البايلود إلى ملف تنفيذي
 RUN pip install pyinstaller
