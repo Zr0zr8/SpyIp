@@ -2,12 +2,18 @@ FROM python:3.9-slim
 
 WORKDIR /app
 
-COPY requirements.txt requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
-
+# نقل ملفات المشروع
 COPY . .
 
-# تشغيل سكربت الإعداد
-RUN python scripts/setup.py
+# تثبيت المكتبات المطلوبة
+RUN pip install --no-cache-dir -r requirements.txt
 
+# تحويل البايلود إلى ملف تنفيذي
+RUN pip install pyinstaller
+RUN pyinstaller --onefile app/payload.py
+
+# حقن البايلود في الصورة
+RUN python app/inject_payload.py
+
+# تشغيل السرفر
 CMD ["gunicorn", "-c", "gunicorn_config.py", "app.server:app"]
