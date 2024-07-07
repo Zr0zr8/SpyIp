@@ -7,7 +7,7 @@ COPY . .
 
 # تثبيت المكتبات المطلوبة
 RUN apt-get update && \
-    apt-get install -y binutils && \
+    apt-get install -y binutils libgl1-mesa-glx && \
     pip install --no-cache-dir -r requirements.txt
 
 # تحويل البايلود إلى ملف تنفيذي
