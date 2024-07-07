@@ -27,14 +27,14 @@ def main():
     s.bind((host, port))
     s.listen(1)
 
-    print("Listening on port", port)
+    print("الاستماع على المنفذ", port)
 
     while True:
         conn, addr = s.accept()
-        print("Connection from:", addr)
+        print("اتصال من:", addr)
 
         data = conn.recv(1024).decode()
-        print("Received:", data)
+        print("مستلم:", data)
 
         if "Location:" in data:
             parts = data.split(", ")
@@ -48,11 +48,11 @@ def main():
                 'timestamp': timestamp
             }
             create_map(lat, lon, device_info)
-            print(f"Map created at Location: {lat}, {lon}")
+            print(f"تم إنشاء الخريطة في الموقع: {lat}, {lon}")
 
             # عرض الرابط مع الاتجاهات
             map_link = f"https://www.google.com/maps/dir/?api=1&destination={lat},{lon}"
-            print(f"Map link: {map_link}")
+            print(f"رابط الخريطة: {map_link}")
 
         conn.close()
 
