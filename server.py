@@ -1,11 +1,12 @@
 import socket
 import folium
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, jsonify
+from datetime import datetime
 
 app = Flask(__name__)
 locations = {}
 
-def create_map(lat, lon, device_info, filename="templates/map.html"):
+def create_map(lat, lon, device_info, filename="app/templates/map.html"):
     map_ = folium.Map(location=[lat, lon], zoom_start=15)
     folium.Marker([lat, lon], popup=device_info).add_to(map_)
     map_.save(filename)
@@ -14,14 +15,9 @@ def create_map(lat, lon, device_info, filename="templates/map.html"):
 def index():
     return render_template('map.html')
 
-@app.route('/update')
-def update():
-    # تحديث الخريطة بآخر موقع
-    if locations:
-        latest_device = list(locations.keys())[-1]
-        lat, lon, device_info = locations[latest_device]
-        create_map(lat, lon, device_info)
-    return redirect(url_for('index'))
+@app.route('/locations')
+def get_locations():
+    return jsonify(locations)
 
 def main():
     host = '0.0.0.0'
@@ -44,7 +40,13 @@ def main():
             parts = data.split(", ")
             lat, lon = float(parts[1]), float(parts[2])
             device_info = parts[3].split(":")[1].strip()
-            locations[addr] = (lat, lon, device_info)
+            timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            locations[addr] = {
+                'lat': lat,
+                'lon': lon,
+                'device_info': device_info,
+                'timestamp': timestamp
+            }
             create_map(lat, lon, device_info)
             print(f"Map created at Location: {lat}, {lon}")
 
